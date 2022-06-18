@@ -1,1 +1,4 @@
 # Estudos PDI
+
+- Versionamento
+
