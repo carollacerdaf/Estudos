@@ -1,6 +1,3 @@
 # Estudos PDI
 
 - Versionamento
--teste
-
-
