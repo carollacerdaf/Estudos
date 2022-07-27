@@ -13,12 +13,14 @@
       #messages { list-style-type: none; margin: 0; padding: 0; }
       #messages > li { padding: 0.5rem 1rem; }
       #messages > li:nth-child(odd) { background: #efefef; }
+      .inactive {color:lightGray; font-size: 12; background: red !important;}
     </style>
   </head>
   <body>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
+     <button id="disconnect" onclick="leave()">Sair</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -27,6 +29,7 @@
         var messages = document.getElementById('messages');
         var form = document.getElementById('form');
         var input = document.getElementById('input');
+        var disconnect = document.getElementById('disconnect');
       
         form.addEventListener('submit', function(e) {
           e.preventDefault();
@@ -42,6 +45,17 @@
           messages.appendChild(item);
           window.scrollTo(0, document.body.scrollHeight);
         });
+
+        function leave() {
+          socket.emit('end')
+          var item = document.createElement('li');
+          item.className = 'inactive';
+          item.textContent = "Você foi desconectado";
+          messages.appendChild(item);
+          window.scrollTo(0, document.body.scrollHeight);
+        }
+
+        
       </script>
     <script>
     var socket = io();
