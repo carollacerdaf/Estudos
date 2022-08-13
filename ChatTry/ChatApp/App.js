@@ -6,26 +6,40 @@
  * @flow strict-local
  */
 
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import io from 'socket.io-client';
-import {StyleSheet, TextInput, View, Button, Alert} from 'react-native';
+import {StyleSheet, TextInput, View, Button, Text} from 'react-native';
 import {useForm} from 'react-hook-form';
 
-const App: () => Node = () => {
+function App() {
   const {register, setValue, handleSubmit} = useForm();
-
+  const [message, setMessage] = useState('');
   useEffect(() => {
     register('author');
     register('message');
   }, [register]);
 
   var socket = io.connect('http://localhost:3000/');
+
   const onSubmit = data => {
-    console.log(socket);
     socket.emit('sendMessage', data);
+    renderMessage();
   };
 
-  //Alert.alert(data.author, data.message
+  let renderMessage = messages => {
+    return (
+      <Text>
+        {messages.map(function (item) {
+          `${item.author}: ${item.message}`;
+        })}
+      </Text>
+    );
+  };
+
+  socket.on('receivedMessage', function (data) {
+    renderMessage(data);
+  });
+
   return (
     <View style={styles.sectionContainer}>
       <TextInput
@@ -33,16 +47,16 @@ const App: () => Node = () => {
         placeholder="author"
         onChangeText={text => setValue('author', text)}
       />
-      <View style={styles.sectionDescription} />
+      <View style={styles.sectionDescription}>{renderMessage}</View>
       <TextInput
         style={styles.sectionMessage}
         placeholder="Message"
         onChangeText={text => setValue('message', text)}
       />
-      <Button onPress={handleSubmit(onSubmit())} title="Enviar" />
+      <Button onPress={handleSubmit(onSubmit)} title="Enviar" />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   sectionContainer: {
