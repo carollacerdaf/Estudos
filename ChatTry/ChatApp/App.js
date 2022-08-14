@@ -21,14 +21,15 @@ function App() {
 
   var socket = io.connect('http://localhost:3000/');
 
-  const onSubmit = data => {
-    renderMessage(data);
-    socket.emit('sendMessage', data);
-  };
-
   socket.on('receivedMessage', function (data) {
+    console.log('# ', data);
     renderMessage(data);
   });
+
+  const onSubmit = data => {
+    socket.emit('sendMessage', data);
+    renderMessage(data);
+  };
 
   const renderMessage = data => {
     let new_msg = [...message];
@@ -44,8 +45,8 @@ function App() {
         onChangeText={text => setValue('author', text)}
       />
       <View style={styles.sectionDescription}>
-        {message.map(item => (
-          <Text>
+        {message.map((item, index) => (
+          <Text key={index}>
             {item.author} : {item.message}
           </Text>
         ))}

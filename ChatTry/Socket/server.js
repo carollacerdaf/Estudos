@@ -11,8 +11,13 @@ io.on('connection', socket => {
 
     socket.on('sendMessage', data => {
         messages.push(data);
+        console.log(data)
         socket.broadcast.emit('receivedMessage', data);
     });
+
+    socket.on("connect_error", (err) => {
+        console.log(`connect_error due to ${err.message}`);
+      });
 })
 
 server.listen(3000);
