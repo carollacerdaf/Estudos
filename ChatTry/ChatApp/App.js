@@ -13,7 +13,7 @@ import {useForm} from 'react-hook-form';
 
 function App() {
   const {register, setValue, handleSubmit} = useForm();
-  const [message, setMessage] = useState('');
+  this.state = {message: []};
   useEffect(() => {
     register('author');
     register('message');
@@ -22,23 +22,18 @@ function App() {
   var socket = io.connect('http://localhost:3000/');
 
   const onSubmit = data => {
+    renderMessage(data);
     socket.emit('sendMessage', data);
-    renderMessage();
-  };
-
-  let renderMessage = messages => {
-    return (
-      <Text>
-        {messages.map(function (item) {
-          `${item.author}: ${item.message}`;
-        })}
-      </Text>
-    );
   };
 
   socket.on('receivedMessage', function (data) {
     renderMessage(data);
   });
+
+  const renderMessage = data => {
+    this.state.message.push(data);
+    this.state.message.map(item => console.log('### ', item.author));
+  };
 
   return (
     <View style={styles.sectionContainer}>
@@ -47,7 +42,11 @@ function App() {
         placeholder="author"
         onChangeText={text => setValue('author', text)}
       />
-      <View style={styles.sectionDescription}>{renderMessage}</View>
+      <View style={styles.sectionDescription}>
+        {this.state.message.map(item => (
+          <Text>{item.author}</Text>
+        ))}
+      </View>
       <TextInput
         style={styles.sectionMessage}
         placeholder="Message"
