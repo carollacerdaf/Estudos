@@ -13,7 +13,7 @@ import {useForm} from 'react-hook-form';
 
 function App() {
   const {register, setValue, handleSubmit} = useForm();
-  this.state = {message: []};
+  const [message, setMessage] = useState([]);
   useEffect(() => {
     register('author');
     register('message');
@@ -31,7 +31,9 @@ function App() {
   });
 
   const renderMessage = data => {
-    this.state.message.push(data);
+    let new_msg = [...message];
+    new_msg.push(data);
+    setMessage(new_msg);
   };
 
   return (
@@ -42,8 +44,10 @@ function App() {
         onChangeText={text => setValue('author', text)}
       />
       <View style={styles.sectionDescription}>
-        {this.state.message.map(item => (
-          <Text>{item.author}</Text>
+        {message.map(item => (
+          <Text>
+            {item.author} : {item.message}
+          </Text>
         ))}
       </View>
       <TextInput
