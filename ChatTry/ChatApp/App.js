@@ -32,7 +32,6 @@ function App() {
 
   const renderMessage = data => {
     this.state.message.push(data);
-    this.state.message.map(item => console.log('### ', item.author));
   };
 
   return (

@@ -5,20 +5,14 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-/*app.use(express.static(path.join(__dirname, '../ChatApp')));
-app.set('views', path.join(__dirname, '../ChatApp'));
-app.engine('js');
-app.set('view engine', 'js')
-app.use('/', (req, res)=> {
-    res.render('App.js');
-})*/
-
+let messages = [];
 io.on('connection', socket => {
-    console.log('Scoket conectado', socket.id)
+    console.log('Socket conectado', socket.id)
 
     socket.on('sendMessage', data => {
-        console.log(data)
-    })
+        messages.push(data);
+        socket.broadcast.emit('receivedMessage', data);
+    });
 })
 
 server.listen(3000);
