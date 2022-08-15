@@ -19,7 +19,7 @@ function App() {
     register('message');
   }, [register]);
 
-  var socket = io.connect('http://localhost:3000/');
+  var socket = io.connect('http://192.168.1.2:3000/');
 
   socket.on('receivedMessage', function (data) {
     console.log('# ', data);
