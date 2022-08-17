@@ -14,6 +14,7 @@ import {
   View,
   TouchableOpacity,
   Text,
+  ScrollView,
 } from 'react-native';
 import {useForm} from 'react-hook-form';
 
@@ -51,12 +52,13 @@ function App() {
 
   return (
     <View style={styles.sectionContainer}>
+      <Text style={styles.title}>ChatApp</Text>
       <TextInput
         style={styles.sectionUserSend}
-        placeholder="author"
+        placeholder="Author"
         onChangeText={text => setValue('author', text)}
       />
-      <View style={styles.messageContainer}>
+      <ScrollView style={styles.messageContainer}>
         {message.map((item, index) => (
           <View style={styles.sectionDescription}>
             <Text style={styles.author} key={index}>
@@ -65,7 +67,7 @@ function App() {
             <Text style={styles.message}>{item.message}</Text>
           </View>
         ))}
-      </View>
+      </ScrollView>
       <View style={styles.sectionSend}>
         <TextInput
           clearButtonMode="always"
@@ -76,7 +78,7 @@ function App() {
         <TouchableOpacity
           style={styles.button}
           onPress={handleSubmit(onSubmit)}>
-          <Text> Enviar </Text>
+          <Text style={styles.buttonTxt}> Send </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -85,13 +87,20 @@ function App() {
 
 const styles = StyleSheet.create({
   sectionContainer: {
-    marginTop: 80,
+    marginTop: 40,
     paddingHorizontal: 24,
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 14,
+    marginBottom: 10,
+    marginTop: 5,
   },
   messageContainer: {
     opacity: 0.5,
     marginTop: 6,
     marginBottom: 6,
+    height: 530,
   },
   sectionUserSend: {
     fontSize: 14,
@@ -117,9 +126,9 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   sectionSend: {
-    bottom: -400,
     maxWidth: '100%',
     position: 'static',
+    marginTop: 4,
   },
   highlight: {
     fontWeight: '700',
@@ -132,8 +141,15 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    margin: 15,
+    height: 30,
+    marginTop: 4,
     fontWeight: 'bold',
+    backgroundColor: 'green',
+    opacity: 0.7,
+    padding: 4,
+  },
+  buttonTxt: {
+    color: '#fff',
   },
 });
 
