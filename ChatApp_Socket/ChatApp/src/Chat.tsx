@@ -9,8 +9,6 @@ import InputField from './components/InputField/InputField';
 import ToggleWarning from './components/ToggleWarning/ToggleWarning';
 
 const socket = io('http://localhost:3000/');
-//const socket = io('http://192.168.1.2:3000/', {transports: ['websocket']});
-//to android device: adb reverse tcp:3000 tcp:3000
 
 function Chat() {
   const {register, setValue, handleSubmit} = useForm();
@@ -24,6 +22,16 @@ function Chat() {
 
   socket.on('hello', function (arg: IMessage) {
     renderMessage(arg);
+  });
+
+  socket.on('receivedMessage', function (data: IMessage) {
+    renderMessage(data);
+  });
+
+  socket.on('previousMessages', function (messages) {
+    messages.map((msg: IMessage) => {
+      renderMessage(msg);
+    });
   });
 
   const onSubmit = (data: any) => {
@@ -40,10 +48,6 @@ function Chat() {
       renderMessage(data);
     }
   };
-  socket.on('receivedMessage', function (data: IMessage) {
-    renderMessage(data);
-  });
-
   const renderMessage = (data: IMessage) => {
     let new_msg = [...message];
     new_msg.push(data);
