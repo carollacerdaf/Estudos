@@ -33,7 +33,7 @@ export default function Login() {
           onChangeText={handleChange('email')}
           onBlur={handleBlur('email')}
           onSubmitEditing={() => password.current?.focus()}
-          errors={errors.email}
+          error={errors.email}
           touched={touched.email}
           autoCapitalize='none'
           autoCompleteType='email'
