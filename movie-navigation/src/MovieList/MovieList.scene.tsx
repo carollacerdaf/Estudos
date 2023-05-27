@@ -1,45 +1,16 @@
 import React from 'react';
 import { View, Text, Button, TouchableOpacity, FlatList } from 'react-native';
 import styles from '../MovieList/MovieList.style';
+import { MovieContextProvider } from '../context/movieContext';
+import { MovieContextType } from '../@types/movie';
 
 type Props = {
     navigation: any;
 }
 
-type Movie = {
-    Title: string;
-    Year: string;
-    imdbID: string;
-    Type: string;
-    Poster: string;
-}
-
-type AppState = {
-    movies: Movie[];
-}
-
 export default class MovieList extends React.Component<Props> {
-    state: AppState = {
-        movies: []
-    }
-
-    getMovies = () => {
-        return fetch('https://www.omdbapi.com/?apikey=fb499913&s=Love&page=2')
-            .then(response => response.json())
-            .then(json => {
-                this.setState({ movies: json.Search });
-            })
-            .catch(error => {
-                console.log(error);
-            })
-    };
-
-    componentDidMount(): void {
-        this.getMovies();
-    }
-
     render() {
-        const { movies } = this.state;
+        const {movies} = React.useContext(MovieContextProvider);
         return (
             <View>
                 <FlatList style={styles.list}
